@@ -18,7 +18,8 @@ public interface PurchaseMapper {
             @Mapping(source = "fecha", target = "date"),
             @Mapping(source = "medioPago", target = "paymentMethod"),
             @Mapping(source = "comentario", target = "comment"),
-            @Mapping(source = "productos", target = "items")
+            @Mapping(source = "productos", target = "items"),
+            @Mapping(source = "estado", target = "state")
     })
     Purchase toPurchase(Compra compra);
     List<Purchase> toPurchases(List<Compra> compras);
