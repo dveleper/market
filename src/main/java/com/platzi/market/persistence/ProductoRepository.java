@@ -13,6 +13,7 @@ public class ProductoRepository implements ProductRepository {
 
     private ProductoCrudRepository productoCrudRepository;
     private ProductMapper mapper;
+
     @Override
     public List<Product> getAll() {
         List<Producto> productos = (List<Producto>)productoCrudRepository.findAll();
@@ -27,34 +28,25 @@ public class ProductoRepository implements ProductRepository {
 
     @Override
     public Optional<List<Product>> getScarseProducts(int quantity) {
-        return Optional.empty();
+        Optional<List<Producto>> productos = productoCrudRepository.findByCantidadStockLessThanAndEstado(quantity, true);
+        return productos.map(producto -> mapper.toProducts(producto));
     }
 
     @Override
     public Optional<Product> getProduct(int productId) {
-        return Optional.empty();
+        return productoCrudRepository.findById(productId).map(product -> mapper.toProduct(product));
     }
 
     @Override
     public Product save(Product product) {
-        return null;
+        Producto producto = mapper.toProduct(product);
+        return mapper.toProduct(productoCrudRepository.save(producto));
+    }
+
+    @Override
+    public void delete(int productId) {
+        productoCrudRepository.deleteById(productId);
     }
 
 
-
-    public Optional<List<Producto>> getEscasos(int cantidad) {
-        return productoCrudRepository.findByCantidadStockLessThanAndEstado(cantidad, true);
-    }
-
-    public Optional<Producto> getProducto(int idProducto) {
-        return productoCrudRepository.findById(idProducto);
-    }
-
-    public Producto save(Producto producto) {
-        return productoCrudRepository.save(producto);
-    }
-
-    public void delete(int idProducto) {
-        productoCrudRepository.deleteById(idProducto);
-    }
 }
